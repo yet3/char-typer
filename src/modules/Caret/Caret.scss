@@ -1,0 +1,32 @@
+.caret {
+  $dur: 150ms;
+  $easing: ease;
+
+  transition: width $dur $easing;
+  &::before {
+    transition:
+      width $dur $easing,
+      height $dur $easing,
+      transform $dur $easing,
+      top $dur $easing;
+  }
+
+  &[data-pulse-active="true"] {
+    animation: anim__caret_pulse 4s ease infinite;
+  }
+}
+
+@keyframes anim__caret_pulse {
+  0% {
+    opacity: 0.3;
+  }
+  25% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.3;
+  }
+}

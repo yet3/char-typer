@@ -1,0 +1,30 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
+@import "./theme.scss";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .space-icon {
+    @apply inline-flex w-[1ch] aspect-[6/2] rounded-b-sm border-current border-2 border-t-0;
+  }
+}
+
+html {
+  @apply text-content-primary bg-page;
+  font-family: var(--ui-font-family);
+}
+
+.typer-text {
+  letter-spacing: var(--typer-letter-spacing);
+  white-space: pre;
+  color: var(--typer-untyped-text);
+  font-size: var(--typer-font-size);
+  font-weight: var(--typer-font-weight);
+  font-family: var(--typer-font-family);
+}
+
+kbd {
+  @apply text-sm p-1 bg-content-primary text-page border border-primary rounded;
+}
