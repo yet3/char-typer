@@ -20,7 +20,8 @@ export default defineConfig({
     appIcon: "./public/favicon.svg",
     meta: {
       author: AUTHOR,
-      keywords: "",
+      keywords:
+        "typing, typing test, typing skills, typing game, typing practice, typing speed test, test, keyboard, minimalistic, minimal, wpm, cpm, cps, words per minute, accuracy",
       description: DESCRIPTION,
       robots: "index, follow",
       canonical: URL,
