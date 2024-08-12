@@ -1,5 +1,10 @@
-# <div style="display: flex; align-items: center;"><img src="./public/favicon.svg" alt="Char typer favicon" width="96px" /> <span style="margin-left: 12px;">Char typer</span></div>
+<h1 align="center">
+ <img src="./public/favicon.svg" alt="Char typer icon" width="100px" /> 
+ <p>Char typer</p>
+</h1>
+
 Yet another app to train your typing skills, with focus on typing characters instead of words.
+
 ![Char typer img](./public/cover.jpeg)
 ## Used to create
 - [pnpm](https://pnpm.io)
