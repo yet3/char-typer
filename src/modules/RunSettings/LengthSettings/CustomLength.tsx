@@ -108,7 +108,7 @@ export const CustomLength = () => {
       </button>
 
       {isModalOpen && (
-        <aside className="w-48 flex flex-col absolute top-full mt-1 left-1/2 -translate-x-1/2 bg-white p-3 rounded border border-primary bg-page shadow shadow-black/30">
+        <aside className="w-48 flex flex-col absolute top-full mt-1 left-1/2 -translate-x-1/2 bg-page p-3 rounded border border-primary shadow shadow-black/30">
           <label>
             Custom length
             <input
