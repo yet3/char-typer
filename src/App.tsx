@@ -56,8 +56,26 @@ const App = () => {
       { fireImmediately: true, equalityFn: deepEqual },
     );
 
+    const reclculateCharWidth = () => {
+      const textMeasurer = textMeasurerRef.current;
+      if (!textMeasurer) return;
+
+      const store = useAppStore.getState();
+
+      if (store.run.segments.length > 0) {
+        textMeasurer.innerText = store.run.segments[0].expected[0];
+        store.run.setCurrentCharWidth(
+          textMeasurer.getBoundingClientRect().width,
+        );
+      }
+    };
+
+    document.fonts.addEventListener("loadingdone", reclculateCharWidth);
+    document.fonts.addEventListener("loadingerror", reclculateCharWidth);
     return () => {
       regenerateUnsub();
+      document.fonts.removeEventListener("loadingdone", reclculateCharWidth);
+      document.fonts.removeEventListener("loadingerror", reclculateCharWidth);
     };
   }, [createNewRun]);
 
