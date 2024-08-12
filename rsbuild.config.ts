@@ -5,7 +5,7 @@ import { pluginSass } from "@rsbuild/plugin-sass";
 const AUTHOR = "Maksymilian Kasperowicz <yet3.dev@gmail.com>";
 const TITLE = "Char typer";
 const DESCRIPTION = "Yet another app to train your typing skills";
-const URL = "www.char-typer.dev";
+const URL = "https://char-typer.vercel.app/";
 const LOCALE = "en_US";
 const COVER_IMG = "/cover.jpeg";
 
