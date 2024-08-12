@@ -50,7 +50,7 @@ export const useAppStore = create<
             ...(persistedState as IRootStore).settings,
           },
         }),
-        name: "persisted-state-2",
+        name: "persisted-state",
       },
     ),
   ),
