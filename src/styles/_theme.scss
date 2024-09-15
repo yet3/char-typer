@@ -1,21 +1,21 @@
 :root {
-  --bg-page: 205 3 13;
+  --bg-page: 205 3% 13%;
 
-  --accent: 6 93 71;
+  --accent: 6 93% 71%;
 
-  --content-primary: 210 21 82;
+  --content-primary: 210 21% 82%;
   --content-accent: var(--accent);
 
-  --border-primary: 210 4 30;
+  --border-primary: 210 4% 30%;
 
   --ui-font-family: "Roboto Mono";
 
   --typer-letter-spacing: 10px;
   --typer-caret: var(--accent);
   --typer-untyped-text: var(--content-primary);
-  --typer-typed-text: 0 0 50;
-  --typer-error-text: 177 100 50;
-  --typer-mistyped-text: 360 100 68;
+  --typer-typed-text: 0 0% 50%;
+  --typer-error-text: 177 100% 50%;
+  --typer-mistyped-text: 360 100% 68%;
   --typer-font-family: "Roboto Mono";
   --typer-font-weight: normal;
   --typer-font-size: 24px;
