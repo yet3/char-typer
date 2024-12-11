@@ -130,6 +130,10 @@ export const createRunSlice: TStoreSlice<IRunSlice> = (set, get) => ({
       });
     },
     end: () => {
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
+
       set((s) => {
         s.run.status = RunStatus.OVER;
         s.run.finishedAt = new Date().getTime();

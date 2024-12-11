@@ -70,7 +70,15 @@ export const KeyboardHandler = () => {
 
     const handleKeyDown = (e: globalThis.KeyboardEvent) => {
       if (!inputRef.current) return;
-      e.preventDefault();
+
+      if (runStatus === RunStatus.OVER) {
+        e.preventDefault();
+        if (e.key === "Tab") {
+          createNewRun();
+        }
+        return;
+      }
+
       inputRef.current.focus();
     };
 
@@ -78,7 +86,7 @@ export const KeyboardHandler = () => {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [isFocused, isAnyModalOpen]);
+  }, [isFocused, isAnyModalOpen, runStatus, createNewRun]);
 
   const handleOnBlur = () => {
     setIsFocused(false);
