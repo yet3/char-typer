@@ -1,12 +1,9 @@
 import { useAppCtx } from "@modules/AppCtx";
 import { useAppStore } from "@stores/root.store";
-import { selectSumOfVisibleOffsets } from "@stores/run.slice";
 import type { ISegment } from "@typings/run.types";
 import { useEffect, useRef, useState } from "react";
 import { Segment } from "./Segment";
 import { getMissingSegments, getSegmentsVisibilityChanges } from "./lib";
-
-const ANIM_FPS = 10;
 
 export const Segmenter = () => {
   const { overflowContainerRef, textMeasurerRef } = useAppCtx();
@@ -17,33 +14,45 @@ export const Segmenter = () => {
   const containerRef = useRef<HTMLUListElement | null>(null);
 
   const offset = useRef<number>(0);
+
   const offsetAnimationId = useRef<number | null>(null);
 
-  const setOffset = (newOffset: number) => {
+  const animGoalOffset = useRef<number>(0);
+
+  const setOffset = (newOffset: number, goalOffset?: number) => {
     const container = containerRef.current;
     if (!container) return;
     offset.current = newOffset;
+    if (goalOffset != null) {
+      container.setAttribute("goal-offset", goalOffset.toString());
+    } else container.removeAttribute("goal-offset");
     container.style.transform = `translate(-${newOffset}px, -50%)`;
   };
 
-  const animateOffset = (goalOffset: number) => {
+  const animateOffset = (_goalOffset: number) => {
     const id = Math.random();
-    offsetAnimationId.current = id;
+    animGoalOffset.current = _goalOffset;
 
-    let animStartOffset = offset.current;
+    if (offsetAnimationId.current == null) {
+      offsetAnimationId.current = id;
+    }
+
+    let lastTime = new Date().getTime();
     const animationFrame = () => {
-      if (id !== offsetAnimationId.current) {
-        return;
-      }
+      const goalOffset = animGoalOffset.current;
 
-      if (Math.abs(goalOffset - animStartOffset) <= 0.1) {
+      const now = new Date().getTime();
+      const dt = (now - lastTime) / 100;
+      lastTime = now;
+
+      if (Math.abs(goalOffset - offset.current) <= 0.2) {
+        offsetAnimationId.current = null;
         setOffset(goalOffset);
         return;
       }
 
-      const diff = (goalOffset - animStartOffset) / ANIM_FPS;
-      animStartOffset += diff;
-      setOffset(offset.current + diff);
+      const diff = goalOffset - offset.current;
+      setOffset(offset.current + diff * dt, goalOffset);
 
       requestAnimationFrame(animationFrame);
     };
@@ -80,14 +89,16 @@ export const Segmenter = () => {
       (segments) => {
         setVisibleSegments(segments);
       },
-      { fireImmediately: true, equalityFn: (a, b) => a.length === b.length },
+      {
+        fireImmediately: true,
+        equalityFn: (a, b) => a.length === b.length,
+      },
     );
 
     const typerUnsub = useAppStore.subscribe(
       (s) => s.run.segments[s.run.currentSegmentIdx]?.value,
       () => {
         const store = useAppStore.getState();
-        const segments = store.run.segments;
         const seg = store.run.segments[store.run.currentSegmentIdx];
 
         const container = containerRef.current;
@@ -110,11 +121,12 @@ export const Segmenter = () => {
         textMeasurer.innerText = seg.expected.substring(0, seg.value.length);
         const segmentOffsetX = textMeasurer.getBoundingClientRect().width;
 
+        store.run.updateSegmentOffset(seg.idx, () => segmentOffsetX);
         const { changesMap, offsetAdjustment } = getSegmentsVisibilityChanges({
           container,
           overflowRect,
           offset: offset.current,
-          segments,
+          segments: useAppStore.getState().run.segments,
         });
 
         // Update offset to compensate for segments that will get hidden
@@ -123,8 +135,15 @@ export const Segmenter = () => {
 
         store.run.setCurrentCharWidth(caretWidth);
         store.run.setManySegmentsVisibility(changesMap);
-        store.run.updateSegmentOffset(seg.idx, () => segmentOffsetX);
-        animateOffset(selectSumOfVisibleOffsets(useAppStore.getState()));
+
+        const updatedVisibleSegments = useAppStore
+          .getState()
+          .run.segments.filter((seg) => seg.isVisible);
+
+        animateOffset(
+          updatedVisibleSegments.reduce((acc, cur) => acc + cur.offset, 0),
+        );
+        setVisibleSegments(updatedVisibleSegments);
 
         if (store.run.currentSegmentIdx >= store.run.segments.length - 3) {
           store.run.extend();

@@ -192,7 +192,7 @@ export const getSegmentsVisibilityChanges = ({
       ) {
         const idx = segment.idx - 1;
         if (idx >= 0 && !segments[idx]?.isVisible) {
-          offsetAdjustment += segment.offset;
+          offsetAdjustment += segments[idx].offset;
           changesMap.set(idx, true);
         }
       }

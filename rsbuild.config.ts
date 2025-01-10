@@ -17,7 +17,10 @@ export default defineConfig({
   html: {
     title: TITLE,
     favicon: "./public/favicon.svg",
-    appIcon: "./public/favicon.svg",
+    appIcon: {
+      name: "Char typer",
+      icons: [{ src: "./public/favicon.svg", size: 196 }],
+    },
     meta: {
       author: AUTHOR,
       keywords:
