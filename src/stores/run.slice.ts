@@ -237,8 +237,3 @@ export const selectSumOfTypedChars = (store: IRootStore): number => {
   return store.run.segments.reduce((acc, cur) => acc + cur.value.length, 0);
 };
 
-export const selectSumOfVisibleOffsets = (store: IRootStore): number => {
-  return store.run.segments
-    .filter((seg) => seg.isVisible)
-    .reduce((acc, cur) => acc + cur.offset, 0);
-};
